@@ -3,6 +3,25 @@ import { Book } from '../models/BookModel.js';
 
 const router = express.Router();
 
+// Route for Search books by title
+router.get('/search', async ( request, response) => {
+    try {
+        const { title } = request.query;
+        console.log(title);
+        if (!title) {
+            return response.status(400).send({ message: 'Please provide a title to search' });
+        }
+        const books = await Book.find({ title: new RegExp( title, 'i' ) }); // 'i' makes the search case-insensitive
+        if (books.length === 0) {
+            return response.status(404).send({ message: `No books found with title containing: ${title}` });
+        }
+        return response.status(200).json({ count: books.length, data: books });
+    } catch (error) {
+        console.log(error);
+        response.status(500).send({ message: error.message });
+    }
+});
+
 // Route for Get all books
 router.get('/', async ( request, response ) => {
     try {
