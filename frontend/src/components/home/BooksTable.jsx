@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { BsInfoCircle } from 'react-icons/bs';
-import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md';
+import { MdOutlineDelete } from 'react-icons/md';
 
 const BooksTable = ({ books }) => {
     return (
@@ -20,7 +20,9 @@ const BooksTable = ({ books }) => {
             </tr>
             </thead>
             <tbody>
-            {books.map((book, index) => (
+            { books.length === 0
+                ? <h2 className='px-4'>No books found</h2>
+                : books.map((book, index) => (
                 <tr key={book._id} className='h-8'>
                     <td className='border border-slate-700 rounded-md text-center'>
                         {index + 1}
