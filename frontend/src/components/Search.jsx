@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Spinner from "./Spinner.jsx";
 import axios from "axios";
 
 const Search = ( props ) => {
@@ -16,7 +15,7 @@ const Search = ( props ) => {
             setLoading(true);
             setError('');
             try {
-                const response = await axios.get(`http://localhost:5555/books/search?title=${query}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/books/search?title=${query}`);
                 setResults(response.data.data);
             } catch (err) {
                 if (err.response && err.response.data.message) {

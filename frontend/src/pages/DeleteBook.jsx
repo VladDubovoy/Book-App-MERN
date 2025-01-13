@@ -14,7 +14,7 @@ const DeleteBook = () => {
     const handleDeleteBook = () => {
         setLoading(true);
         axios
-            .delete(`http://localhost:5555/books/${id}`)
+            .delete(`${import.meta.env.VITE_BACKEND_API}/books/${id}`)
             .then(() => {
                 setLoading(false);
                 enqueueSnackbar('Book Deleted successfully', { variant: 'success' });
@@ -22,7 +22,6 @@ const DeleteBook = () => {
             })
             .catch((error) => {
                 setLoading(false);
-                // alert('An error happened. Please Chack console');
                 enqueueSnackbar('Error', { variant: 'error' });
                 console.log(error);
             });
