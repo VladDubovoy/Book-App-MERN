@@ -4,13 +4,12 @@ Express.js
 React
 Node.js
 
-**Group: ZPI-21**
+**Група: ЗПІ-21**
 
-**Subject: "Технології паралельний обчислень"**
+**Предмет: "Основи Візуального Програмування"**
 
-**Students:**
-* Olga Lomachynska
-* Vladyslav Dubovyi
+**Студент:**
+* Дубовий В.О.
 
-Teacher: 
-* Evgeny Krylov
+**Викладач:**
+* Мамедова К.Ю.
