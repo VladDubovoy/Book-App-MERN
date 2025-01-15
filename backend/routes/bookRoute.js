@@ -7,18 +7,14 @@ const router = express.Router();
 router.get('/search', async ( request, response) => {
     try {
         const { title } = request.query;
-        if ( !title ) {
-            const books = await Book.find( {} );
-            return response.status( 200 ).json( {
-                count: books.length,
-                data: books
-            } );
+        if (!title) {
+            return response.status(400).send({ message: 'Please provide a title to search' });
         }
         const books = await Book.find({ title: new RegExp( title, 'i' ) }); // 'i' makes the search case-insensitive
         if (books.length === 0) {
             return response.status(404).send({ message: `No books found with title containing: ${title}` });
         }
-        return response.status(200).json({ count: books.length, data: books });
+        return response.status(200).json({ count: books.length, data: books.map( book => book._id ) });
     } catch (error) {
         console.log(error);
         response.status(500).send({ message: error.message });

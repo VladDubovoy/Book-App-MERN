@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
 const Search = ( props ) => {
-    const { setBooks, setLoading } = props;
-    const [query, setQuery] = useState(localStorage.getItem('query') || '');
+    const { setFilteredIds, setLoading, query, setQuery } = props;
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -14,10 +13,10 @@ const Search = ( props ) => {
             setError('');
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/books/search?title=${query}`);
-                setBooks(response.data.data);
+                setFilteredIds(response.data.data);
             } catch (err) {
                 if (err.response && err.response.data.message) {
-                    setBooks([]);
+                    setFilteredIds([]);
                     setError(err.response.data.message);
                 } else {
                     setError('An unexpected error occurred');

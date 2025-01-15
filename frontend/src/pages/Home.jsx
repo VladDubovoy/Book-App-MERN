@@ -7,8 +7,10 @@ import BooksTable from '../components/home/BooksTable';
 import BooksCard from '../components/home/BooksCard';
 import Search from "../components/Search.jsx";
 
-const Home = () => {
+function Home() {
     const [books, setBooks] = useState([]);
+    const [filteredIds, setFilteredIds] = useState([]);
+    const [query, setQuery] = useState(localStorage.getItem('query') || '');
     const [loading, setLoading] = useState(false);
     const [showType, setShowType] = useState(localStorage.getItem('type') || 'table');
 
@@ -32,12 +34,19 @@ const Home = () => {
         localStorage.setItem('type', type);
     }
 
+    function filterBooks( books = [] ) {
+        if ( query.trim() === '' ) {
+            return books;
+        }
+        return books.filter( book => filteredIds.includes( book._id) );
+    }
+
     return (
         <div className='p-4'>
             <h1 className='text-2xl'>Основи Візуального Програмування</h1>
             <h2 className='text-1xl'>Cтудент: ЗПІ-ЗП-21 Дубовий Владислав</h2>
             <hr/>
-            <Search setBooks={setBooks} setLoading={setLoading}/>
+            <Search setFilteredIds={setFilteredIds} setLoading={setLoading} query={query} setQuery={setQuery}/>
             <div className='flex justify-center items-center gap-x-4'>
                 <button
                     data-type='table'
@@ -61,10 +70,10 @@ const Home = () => {
                 </Link>
             </div>
             { loading && <Spinner/> }
-            { !loading && showType === 'table' && <BooksTable books={books} /> }
-            { !loading && showType === 'card' && <BooksCard books={books} /> }
+            { !loading && showType === 'table' && <BooksTable books={ filterBooks( books ) } /> }
+            { !loading && showType === 'card' && <BooksCard books={ filterBooks( books ) } /> }
         </div>
     );
-};
+}
 
 export default Home;
