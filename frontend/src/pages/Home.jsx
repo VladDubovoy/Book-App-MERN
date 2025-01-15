@@ -10,9 +10,7 @@ import Search from "../components/Search.jsx";
 const Home = () => {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [showType, setShowType] = useState('table');
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
+    const [showType, setShowType] = useState(localStorage.getItem('type') || 'table');
 
     useEffect(() => {
         setLoading(true);
@@ -28,25 +26,30 @@ const Home = () => {
             });
     }, []);
 
-    const filteredBooks = query.trim()
-        ? books.filter(book => results.includes(book._id))
-        : books;
+    function toggleType( e ) {
+        const type = e.target.dataset.type;
+        setShowType( type );
+        localStorage.setItem('type', type);
+    }
 
     return (
         <div className='p-4'>
             <h1 className='text-2xl'>Основи Візуального Програмування</h1>
             <h2 className='text-1xl'>Cтудент: ЗПІ-ЗП-21 Дубовий Владислав</h2>
-            <Search setResults={setResults} query={query} setQuery={setQuery} setLoading={setLoading}/>
+            <hr/>
+            <Search setBooks={setBooks} setLoading={setLoading}/>
             <div className='flex justify-center items-center gap-x-4'>
                 <button
+                    data-type='table'
                     className='bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg'
-                    onClick={() => setShowType('table')}
+                    onClick={toggleType}
                 >
                     Table
                 </button>
                 <button
+                    data-type='card'
                     className='bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg'
-                    onClick={() => setShowType('card')}
+                    onClick={toggleType}
                 >
                     Card
                 </button>
@@ -58,8 +61,8 @@ const Home = () => {
                 </Link>
             </div>
             { loading && <Spinner/> }
-            { !loading && showType === 'table' && <BooksTable books={filteredBooks}/> }
-            { !loading && showType === 'card' && <BooksCard books={filteredBooks}/> }
+            { !loading && showType === 'table' && <BooksTable books={books} /> }
+            { !loading && showType === 'card' && <BooksCard books={books} /> }
         </div>
     );
 };

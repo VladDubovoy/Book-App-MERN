@@ -2,23 +2,22 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
 const Search = ( props ) => {
-    const { setResults, query, setQuery, setLoading } = props;
+    const { setBooks, setLoading } = props;
+    const [query, setQuery] = useState(localStorage.getItem('query') || '');
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (query.trim() === '') {
-            setResults([]);
-            return;
-        }
+        localStorage.setItem('query', query);
 
         const fetchData = async () => {
             setLoading(true);
             setError('');
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/books/search?title=${query}`);
-                setResults(response.data.data);
+                setBooks(response.data.data);
             } catch (err) {
                 if (err.response && err.response.data.message) {
+                    setBooks([]);
                     setError(err.response.data.message);
                 } else {
                     setError('An unexpected error occurred');

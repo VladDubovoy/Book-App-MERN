@@ -37,7 +37,7 @@ const EditBook = () => {
         };
         setLoading(true);
         axios
-            .put(`${import.meta.env.BACKEND_API}/books/${id}`, data)
+            .put(`${import.meta.env.VITE_BACKEND_API}/books/${id}`, data)
             .then(() => {
                 setLoading(false);
                 enqueueSnackbar('Book Edited successfully', { variant: 'success' });
